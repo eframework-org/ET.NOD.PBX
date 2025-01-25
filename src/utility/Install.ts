@@ -261,7 +261,7 @@ export namespace Install {
 
             try {
                 const plat = process.platform
-                const arch = process.arch === "arm64" ? "aarch64" : (process.arch === "x64" ? "x86_64" : "x86_32")
+                const arch = process.arch === "arm64" ? "aarch_64" : (process.arch === "x64" ? "x86_64" : "x86_32")
                 const bin = plat + "_" + arch
 
                 let url = binurl[bin]
