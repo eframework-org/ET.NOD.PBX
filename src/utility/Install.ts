@@ -112,6 +112,7 @@ export namespace Install {
                 XFile.SaveText(local, version)
             } catch (err) {
                 XLog.Error(`Install.Protoc: @${version} install failed: ${err}`)
+                throw err
             }
         }
     }
@@ -141,6 +142,7 @@ export namespace Install {
                 XFile.SaveText(genGoVerLocal, genGoVer)
             } catch (err) {
                 XLog.Error(`Install.GoTool(protoc-gen-go): @${genGoVer} install failed: ${err}`)
+                throw err
             }
         }
 
@@ -165,6 +167,7 @@ export namespace Install {
                 XFile.SaveText(genGoGRpcVerLocal, genGoGRpcVer)
             } catch (err) {
                 XLog.Error(`Install.GoTool(protoc-gen-go-grpc): @${genGoGRpcVer} install failed: ${err}`)
+                throw err
             }
         }
     }
@@ -228,6 +231,7 @@ export namespace Install {
                 XFile.SaveText(genJSVerLocal, genJSVer)
             } catch (err) {
                 XLog.Error(`Install.JSTool(protoc-gen-js): @${genJSVer} install failed: ${err}`)
+                throw err
             }
         }
 
@@ -284,6 +288,7 @@ export namespace Install {
                 XFile.SaveText(genGRpcWebVerLocal, genGRpcWebVer)
             } catch (err) {
                 XLog.Error(`Install.JSTool(protoc-gen-grpc-web): @${genGRpcWebVer} install failed: ${err}`)
+                throw err
             }
         }
     }
@@ -315,6 +320,7 @@ export namespace Install {
                 XFile.SaveText(genTSVerLocal, genTSVer)
             } catch (err) {
                 XLog.Error(`Install.TSTool(protoc-gen-ts): @${genTSVer} install failed: ${err}`)
+                throw err
             }
         }
     }
