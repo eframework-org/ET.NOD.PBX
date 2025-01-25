@@ -309,7 +309,7 @@ export namespace Install {
                     XLog.Debug(`Install.TSTool(protoc-gen-ts): using npm proxy of ${npmproxy}.`)
                 }
 
-                XLog.Debug(`Install.TSTool(protoc-gen-ts): ${child_process.execSync(`npm i -g protoc-gen-ts@${genTSVer}${ext}`, opt)}`)
+                XLog.Debug(`Install.TSTool(protoc-gen-ts): ${child_process.execSync(`npm install protoc-gen-ts@${genTSVer}${ext}`, opt)}`)
 
                 XLog.Debug(`Install.TSTool(protoc-gen-ts): @${genTSVer} has been installed.`)
                 XFile.SaveText(genTSVerLocal, genTSVer)

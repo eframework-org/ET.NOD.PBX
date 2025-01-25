@@ -20,7 +20,7 @@ NOD.PBX 工具能够快捷安装protoc/grpc工具链，并将.proto文件编译�
 - Simplify access restrictions for China region mirrors. 优化中国区镜像访问限制。
 
 ## Manual | 使用手册
-- Install/安装: npm i -g et.nod.pbx
+- Install/安装: npm install et.nod.pbx
 
 - Cmd1/命令1: protox [options], distinct with protoc. 与protoc消歧义。
   * --help: reveal manual. 查看文档。
