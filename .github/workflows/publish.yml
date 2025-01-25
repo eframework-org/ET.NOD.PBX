@@ -82,10 +82,10 @@ jobs:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH }}
 
     - name: Create and push tag
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         VERSION=$(node -p "require('./package.json').version")
         echo "Creating tag v$VERSION"
         git tag v$VERSION
         git push origin v$VERSION
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
