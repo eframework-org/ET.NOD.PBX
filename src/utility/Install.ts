@@ -96,7 +96,7 @@ export namespace Install {
                         ws.on("finish", () => {
                             ws.close(() => {
                                 XLog.Debug(`Install.Protoc: fetch into ${zip}.`)
-                                XFile.Unzip(zip, dir, resolve)
+                                try { XFile.Unzip(zip, dir, resolve) } catch (err) { reject(err) }
                             })
                         })
                     }).on("error", reject)
