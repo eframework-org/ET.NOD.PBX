@@ -78,7 +78,7 @@ export namespace Install {
                 if (!url) throw new Error(`Unsupported platform: ${bin}. Was not able to find a proper version.`)
 
                 const tz = Intl.DateTimeFormat().resolvedOptions().timeZone.toLocaleLowerCase()
-                if (XString.Contains(tz, "shanghai") || args.has("gitproxy")) {
+                if (XString.Contains(tz, "shanghai") || args.has("gitproxy") || process.env.GITHUB_ACTIONS != null) {
                     url = `${gitproxy.endsWith("/") ? gitproxy : gitproxy + "/"}${url}`
                     XLog.Debug(`Install.Protoc: using git proxy of ${gitproxy}.`)
                 }
@@ -96,15 +96,6 @@ export namespace Install {
                         ws.on("finish", () => {
                             ws.close(() => {
                                 XLog.Debug(`Install.Protoc: fetch into ${zip}.`)
-                                XLog.Debug(`Install.Protoc.HasFile ${XFile.HasFile(zip)}`)
-                                XLog.Debug(`Install.Protoc.HasDir ${XFile.HasDirectory(dir)}`)
-                                try {
-                                    if (XFile.HasFile(zip)) {
-                                        var bff = XFile.OpenFile(zip)
-                                        XLog.Debug(`Install.Protoc.file.len ${bff.byteLength}`)
-                                    }
-                                } catch (err) { reject(err) }
-
                                 try { XFile.Unzip(zip, dir, resolve) } catch (err) { reject(err) }
                             })
                         })
@@ -264,7 +255,7 @@ export namespace Install {
                 if (!url) throw new Error(`Unsupported platform: ${bin}. Was not able to find a proper version.`)
 
                 const tz = Intl.DateTimeFormat().resolvedOptions().timeZone.toLocaleLowerCase()
-                if (XString.Contains(tz, "shanghai") || args.has("gitproxy")) {
+                if (XString.Contains(tz, "shanghai") || args.has("gitproxy") || process.env.GITHUB_ACTIONS != null) {
                     url = `${gitproxy.endsWith("/") ? gitproxy : gitproxy + "/"}${url}`
                     XLog.Debug(`Install.JSTool(protoc-gen-grpc-web): using git proxy of ${gitproxy}.`)
                 }
