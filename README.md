@@ -30,7 +30,7 @@ NOD.PBX 工具能够快捷安装protoc/grpc工具链，并将.proto文件编译�
   * * --protoc=${version}: protoc tool version, default: 29.2. protoc工具版本, 默认: 29.2。
   * * --protoc-gen-go=${version}: protoc-gen-go tool version, default: latest. protoc-gen-go工具版本, 默认: 最新。
   * * --protoc-gen-go-grpc=${version}: protoc-gen-go-grpc tool version, default: latest. protoc-gen-go-grpc工具版本, 默认: 最新。
-  * * --protoc-gen-js=${version}: protoc-gen-js tool version, default: latest. protoc-gen-js工具版本, 默认: 最新。
+  * * --protoc-gen-js=${version}: protoc-gen-js tool version, default: 3.21.4. protoc-gen-js工具版本, 默认: 3.21.4。
   * * --protoc-gen-web-grpc=${version}: protoc-gen-web-grpc tool version, default: 1.5.0. protoc-gen-web-grpc工具版本, 默认: 1.5.0。
   * * --protoc-gen-ts=${version}: protoc-gen-ts tool version, default: latest. protoc-gen-ts工具版本, 默认: 最新。
   * * --gitproxy=${url}: git proxy url, default: https://ghproxy.cn/. git代理地址, 默认: https://ghproxy.cn/。

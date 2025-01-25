@@ -174,54 +174,55 @@ export namespace Install {
     }
 
     async function JSTool(args: Map<string, string> = new Map()) {
-        const httpproxy = process.env["HTTPS_PROXY"]
-        const npmproxy = args.get("npmproxy") ? args.get("npmproxy") : "https://registry.npmmirror.com/"
-        const gitproxy = args.get("gitproxy") ? args.get("gitproxy") : "https://ghproxy.cn/"
-
-        const genJSVer = args.get("protoc-gen-js") ? args.get("protoc-gen-js") : "latest"
+        const genJSVer = args.get("protoc-gen-js") ? args.get("protoc-gen-js") : "3.21.4"
         const genJSVerLocal = XFile.PathJoin(XEnv.DataPath, "protoc-gen-js.ver")
         if (XFile.HasFile(genJSVerLocal) && !args.get("protoc-gen-js")) {
             XLog.Debug(`JSTool(protoc-gen-js): @${XFile.OpenText(genJSVerLocal)}`)
         } else {
+            const gitproxy = args.get("gitproxy") ? args.get("gitproxy") : "https://ghproxy.cn/"
+            const binurl = {
+                "win32_x86_64": `https://github.com/protocolbuffers/protobuf-javascript/releases/download/v${genJSVer}/protobuf-javascript-${genJSVer}-win64.zip`,
+                "linux_x86_32": `https://github.com/protocolbuffers/protobuf-javascript/releases/download/v${genJSVer}/protobuf-javascript-${genJSVer}-linux-x86_32.zip`,
+                "linux_x86_64": `https://github.com/protocolbuffers/protobuf-javascript/releases/download/v${genJSVer}/protobuf-javascript-${genJSVer}-linux-x86_64.zip`,
+                "darwin_x86_64": `https://github.com/protocolbuffers/protobuf-javascript/releases/download/v${genJSVer}/protobuf-javascript-${genJSVer}-osx-x86_64.zip`,
+                "darwin_aarch_64": `https://github.com/protocolbuffers/protobuf-javascript/releases/download/v${genJSVer}/protobuf-javascript-${genJSVer}-osx-aarch_64.zip`
+            }
+
             try {
-                if (!XString.IsNullOrEmpty(httpproxy)) XLog.Debug(`Install.JSTool(protoc-gen-js): using http proxy of ${httpproxy}.`)
+                const plat = process.platform
+                const arch = process.arch === "arm64" ? "aarch_64" : (process.arch === "x64" ? "x86_64" : "x86_32")
+                const bin = plat + "_" + arch
 
-                const opt = XUtility.ExecOpt(XEnv.DataPath)
+                let url = binurl[bin]
+                if (!url) throw new Error(`Unsupported platform: ${bin}. Was not able to find a proper version.`)
+
                 const tz = Intl.DateTimeFormat().resolvedOptions().timeZone.toLocaleLowerCase()
-                const np = child_process.execSync("npm config get registry").toString().trim()
-                let ext = ""
-                if ((XString.Contains(tz, "shanghai") && XString.IsNullOrEmpty(httpproxy) && !XString.Contains(np, "http")) || args.has("npmproxy")) {
-                    ext = ` --registry ${npmproxy}`
-                    XLog.Debug(`Install.JSTool(protoc-gen-js): using npm proxy of ${npmproxy}.`)
+                if (XString.Contains(tz, "shanghai") || args.has("gitproxy") || process.env.GITHUB_ACTIONS != null) {
+                    url = `${gitproxy.endsWith("/") ? gitproxy : gitproxy + "/"}${url}`
+                    XLog.Debug(`Install.JSTool(protoc-gen-js): using git proxy of ${gitproxy}.`)
                 }
-                if (XString.Contains(tz, "shanghai")) ext += " --ignore-scripts" // 忽略post-install脚本（国内网络大部分时间无法访问）
+                XLog.Debug(`Install.JSTool(protoc-gen-js): fetch from ${url}.`)
 
-                XLog.Debug(`Install.JSTool(protoc-gen-js): ${child_process.execSync(`npm i -g protoc-gen-js@${genJSVer}${ext}`, opt)}`)
+                const zip = XFile.PathJoin(XEnv.DataPath, XFile.FileName(url))
+                const ws = fs.createWriteStream(zip)
 
-                if (XString.Contains(tz, "shanghai")) {
-                    const npmroot = child_process.execSync("npm config get prefix").toString().trim()
-                    const pkgroot = XFile.PathJoin(npmroot, "node_modules", "protoc-gen-js")
-                    const postinst = XFile.PathJoin(pkgroot, "post-install.js")
-                    if (XFile.HasFile(postinst) == false) throw new Error(`post-install.js not found: ${postinst}`)
-                    else {
-                        const content = XFile.OpenText(postinst)
-                        const lines = content.split("\n")
-                        for (let i = 0; i < lines.length; i++) {
-                            let line = lines[i]
-                            if (XString.Contains(line, "https://github.com/")) {
-                                lines[i] = line.replace("https://github.com/", `${gitproxy.endsWith("/") ? gitproxy : gitproxy + "/"}https://github.com/`)
-                                XLog.Debug(`Install.JSTool(protoc-gen-js): post-install.js -> download has been patched.`)
-                            } else if (XString.Contains(line, "`bin/protoc-gen-js")) {
-                                lines[i] = line.replace("`bin/protoc-gen-js", "`${zipFilename.replace(path.extname(zipFilename), \"\")}/bin/protoc-gen-js")
-                                XLog.Debug(`Install.JSTool(protoc-gen-js): post-install.js -> zipentry has been patched.`)
-                            }
-                        }
-                        XFile.SaveText(postinst, lines.join("\n"))
-                        XLog.Debug(`Install.JSTool(protoc-gen-js): ${child_process.execSync(`npm run postinstall`, XUtility.ExecOpt(pkgroot))}`)
+                await new Promise((resolve, reject) => {
+                    https.get(url, (response) => {
+                        response.pipe(ws)
+                        ws.on("finish", () => {
+                            ws.close(() => {
+                                XLog.Debug(`Install.JSTool(protoc-gen-js): fetch into ${zip}.`)
+                                try { XFile.Unzip(zip, XEnv.DataPath, resolve) } catch (err) { reject(err) }
+                            })
+                        })
+                    }).on("error", reject)
+                })
 
-                        XLog.Debug(`Install.JSTool(protoc-gen-js): post-install.js has been invoked.`)
-                    }
-                }
+                XFile.DeleteFile(zip)
+
+                const file = XFile.PathJoin(XEnv.DataPath, process.platform === "win32" ? "protoc-gen-js.exe" : "protoc-gen-js")
+                fs.chmodSync(file, 0o755)
+                XLog.Debug(`Install.JSTool(protoc-gen-js): chmod to 0o755.`)
 
                 XLog.Debug(`Install.JSTool(protoc-gen-js): @${genJSVer} has been installed.`)
                 XFile.SaveText(genJSVerLocal, genJSVer)
