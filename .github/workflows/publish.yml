@@ -43,12 +43,13 @@ jobs:
     - name: Install dependencies
       run: npm install
 
-    - name: Install 7-Zip and unzip/zip
+    - name: Install unzip
       if: matrix.os == 'windows-latest'
       run: |
-        choco install 7zip -y
         choco install unzip -y
-        choco install zip -yy
+
+    - name: Run link
+      run: npm link
 
     - name: Run tests
       run: npm test
