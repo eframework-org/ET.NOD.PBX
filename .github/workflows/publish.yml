@@ -22,7 +22,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [windows-latest, macos-latest, macos-12]
+        os: [windows-latest, macos-latest, macos-13]
     
     steps:
     - name: Check out repository

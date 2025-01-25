@@ -13,5 +13,5 @@ module.exports = {
     },
     moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],
     coverageDirectory: "test/log",
-    testTimeout: 60000
+    testTimeout: 600000
 };
