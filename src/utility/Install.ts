@@ -206,6 +206,9 @@ export namespace Install {
                 }
                 XLog.Debug(`Install.JSTool(protoc-gen-js): fetch from ${url}.`)
 
+                const dir = XFile.PathJoin(XEnv.DataPath, "protobuf-javascript")
+                XFile.DeleteDirectory(dir)
+                XFile.CreateDirectory(dir)
                 const zip = XFile.PathJoin(XEnv.DataPath, XFile.FileName(url))
                 const ws = fs.createWriteStream(zip)
 
@@ -215,15 +218,16 @@ export namespace Install {
                         ws.on("finish", () => {
                             ws.close(() => {
                                 XLog.Debug(`Install.JSTool(protoc-gen-js): fetch into ${zip}.`)
-                                try { XFile.Unzip(zip, XEnv.DataPath, resolve) } catch (err) { reject(err) }
+                                try { XFile.Unzip(zip, dir, resolve) } catch (err) { reject(err) }
                             })
                         })
                     }).on("error", reject)
                 })
 
-                const dir = XFile.PathJoin(XEnv.DataPath, XFile.FileName(url, false))
-                const src = XFile.PathJoin(dir, "bin", process.platform === "win32" ? "protoc-gen-js.exe" : "protoc-gen-js")
-                const dst = XFile.PathJoin(XEnv.DataPath, process.platform === "win32" ? "protoc-gen-js.exe" : "protoc-gen-js")
+                let name = process.platform === "win32" ? "protoc-gen-js.exe" : "protoc-gen-js"
+                let src = XFile.PathJoin(dir, "bin", name)
+                if (!XFile.HasFile(src)) src = XFile.PathJoin(dir, XFile.FileName(url, false), "bin", name)   // win32的压缩包多了一个层级
+                const dst = XFile.PathJoin(XEnv.DataPath, name)
                 XFile.CopyFile(src, dst)
 
                 fs.chmodSync(dst, 0o755)
