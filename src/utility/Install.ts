@@ -96,6 +96,15 @@ export namespace Install {
                         ws.on("finish", () => {
                             ws.close(() => {
                                 XLog.Debug(`Install.Protoc: fetch into ${zip}.`)
+                                XLog.Debug(`Install.Protoc.HasFile ${XFile.HasFile(zip)}`)
+                                XLog.Debug(`Install.Protoc.HasDir ${XFile.HasDirectory(dir)}`)
+                                try {
+                                    if (XFile.HasFile(zip)) {
+                                        var bff = XFile.OpenFile(zip)
+                                        XLog.Debug(`Install.Protoc.file.len ${bff.byteLength}`)
+                                    }
+                                } catch (err) { reject(err) }
+
                                 try { XFile.Unzip(zip, dir, resolve) } catch (err) { reject(err) }
                             })
                         })
