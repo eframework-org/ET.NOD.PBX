@@ -22,7 +22,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [windows-latest, macos-latest]
+        os: [windows-latest, macos-latest, macos-12]
     
     steps:
     - name: Check out repository
@@ -33,7 +33,12 @@ jobs:
       with:
         node-version: '20'
         registry-url: 'https://registry.npmjs.org'
-    
+
+    - name: Set up Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: '1.23.5'
+
     - name: Install dependencies
       run: npm install
 
@@ -43,11 +48,6 @@ jobs:
         choco install 7zip -y
         choco install unzip -y
         choco install zip -yy
-
-    - name: Set up Go
-      uses: actions/setup-go@v4
-      with:
-        go-version: '1.23.5'
 
     - name: Run tests
       run: npm test
@@ -72,7 +72,7 @@ jobs:
       uses: actions/setup-go@v4
       with:
         go-version: '1.23.5'
-        
+
     - name: Publish to npm
       run: npm publish --access public
       env:
