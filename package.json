@@ -37,7 +37,8 @@
     "ep.uni.util": "0.0.2",
     "google-protobuf": "3.21.4",
     "grpc-web": "1.5.0",
-    "protobufjs": "7.4.0"
+    "protobufjs": "7.4.0",
+    "protoc-gen-ts": "^0.8.7"
   },
   "devDependencies": {
     "@rollup/plugin-node-resolve": "8.4.0",

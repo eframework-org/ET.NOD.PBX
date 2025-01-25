@@ -221,14 +221,18 @@ export namespace Install {
                     }).on("error", reject)
                 })
 
-                XFile.DeleteFile(zip)
+                const dir = XFile.PathJoin(XEnv.DataPath, XFile.FileName(url, false))
+                const src = XFile.PathJoin(dir, "bin", process.platform === "win32" ? "protoc-gen-js.exe" : "protoc-gen-js")
+                const dst = XFile.PathJoin(XEnv.DataPath, process.platform === "win32" ? "protoc-gen-js.exe" : "protoc-gen-js")
+                XFile.CopyFile(src, dst)
 
-                const file = XFile.PathJoin(XEnv.DataPath, process.platform === "win32" ? "protoc-gen-js.exe" : "protoc-gen-js")
-                fs.chmodSync(file, 0o755)
+                fs.chmodSync(dst, 0o755)
                 XLog.Debug(`Install.JSTool(protoc-gen-js): chmod to 0o755.`)
 
                 XLog.Debug(`Install.JSTool(protoc-gen-js): @${genJSVer} has been installed.`)
                 XFile.SaveText(genJSVerLocal, genJSVer)
+
+                XFile.DeleteFile(zip)
             } catch (err) {
                 XLog.Error(`Install.JSTool(protoc-gen-js): @${genJSVer} install failed: ${err}`)
                 throw err
