@@ -58,6 +58,6 @@
     "test": "jest --coverage --runInBand",
     "debug": "rm -rf dist && rm -rf test/dist && rollup -c",
     "release": "rm -rf dist && rm -rf test/dist && rollup -c --mode=production",
-    "prepublishOnly": "npm install && npm test && npm run release"
+    "prepublishOnly": "npm install && npm run release && npm link && npm test"
   }
 }
