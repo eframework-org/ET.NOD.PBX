@@ -22,8 +22,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [windows-latest]
-        # os: [windows-latest, macos-latest]
+        os: [windows-latest, macos-latest]
     
     steps:
     - name: Check out repository
@@ -42,8 +41,7 @@ jobs:
 
     - name: Install unzip
       if: matrix.os == 'windows-latest'
-      run: |
-        choco install unzip -y
+      run: choco install unzip -y
 
     - name: Install dependencies
       run: npm install
@@ -51,43 +49,43 @@ jobs:
     - name: Run release
       run: npm run release
 
-    - name: Run release
+    - name: Run link
       run: npm link
 
     - name: Run tests
       run: npm test
 
-  # publish:
-  #   needs: test
-  #   runs-on: ubuntu-latest
-  #   permissions:
-  #     contents: write
+  publish:
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
     
-  #   steps:
-  #   - name: Check out repository
-  #     uses: actions/checkout@v3
+    steps:
+    - name: Check out repository
+      uses: actions/checkout@v3
     
-  #   - name: Set up Node.js
-  #     uses: actions/setup-node@v3
-  #     with:
-  #       node-version: '20'
-  #       registry-url: 'https://registry.npmjs.org'
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20'
+        registry-url: 'https://registry.npmjs.org'
       
-  #   - name: Set up Go
-  #     uses: actions/setup-go@v4
-  #     with:
-  #       go-version: '1.23.5'
+    - name: Set up Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: '1.23.5'
 
-  #   - name: Publish to npm
-  #     run: npm publish --access public
-  #     env:
-  #       NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH }}
+    - name: Publish to npm
+      run: npm publish --access public
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH }}
 
-  #   - name: Create and push tag
-  #     run: |
-  #       VERSION=$(node -p "require('./package.json').version")
-  #       echo "Creating tag v$VERSION"
-  #       git tag v$VERSION
-  #       git push origin v$VERSION
-  #     env:
-  #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Create and push tag
+      run: |
+        VERSION=$(node -p "require('./package.json').version")
+        echo "Creating tag v$VERSION"
+        git tag v$VERSION
+        git push origin v$VERSION
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
