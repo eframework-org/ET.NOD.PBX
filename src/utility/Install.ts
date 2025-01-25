@@ -70,7 +70,7 @@ export namespace Install {
 
             try {
                 const plat = process.platform
-                const arch = process.arch === "x64" ? "x86_64" : "x86_32"
+                const arch = process.arch === "arm64" ? "aarch" : (process.arch === "x64" ? "x86_64" : "x86_32")
                 const bin = plat + "_" + arch
                 const dir = XFile.PathJoin(XEnv.DataPath, "protoc")
 
@@ -248,7 +248,7 @@ export namespace Install {
 
             try {
                 const plat = process.platform
-                const arch = process.arch === "x64" ? "x86_64" : "x86_32"
+                const arch = process.arch === "arm64" ? "aarch" : (process.arch === "x64" ? "x86_64" : "x86_32")
                 const bin = plat + "_" + arch
 
                 let url = binurl[bin]
