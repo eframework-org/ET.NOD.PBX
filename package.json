@@ -28,7 +28,7 @@
   "files": [
     "dist/",
     "res/",
-    "LICENSE.md",
+    "LICENSE",
     "README.md",
     "package.json",
     ".gitignore"
