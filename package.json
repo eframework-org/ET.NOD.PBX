@@ -1,7 +1,7 @@
 {
   "name": "et.nod.pbx",
   "displayName": "ProtoX",
-  "description": "Tool NOD.PBX easily installs protoc/grpc toolchains and compiles .proto files into various languages such as Go, C#, JavaScript, Lua, etc.",
+  "description": "NOD.PBX 工具简化了 Protocol Buffers 和 gRPC 的安装与使用，支持多种编程语言的代码生成。",
   "version": "0.0.1",
   "author": "eframework-org",
   "homepage": "https://github.com/eframework-org",

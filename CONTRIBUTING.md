@@ -257,9 +257,75 @@ protox --version
 - 构建发布包：`npm run release`
 - 发布到商店：Run workflow [Publish](.github/workflows/publish.yml)
 
-## 相关链接
+## 技术讨论
 
-- [Luban 项目](https://github.com/focus-creative-games/luban)
+### 1. 工具链安装参考
+以下项目提供了不同的 protoc 工具链安装方案：
+- [protobuf-ts](https://github.com/timostamm/protobuf-ts)
+- [node-protoc](https://github.com/YePpHa/node-protoc)
+- [gRPC Installation](https://grpc.io/blog/installation/)
+
+### 2. Proto2 vs Proto3
+主要区别：
+- 语法简化：Proto3 移除了 required 支持，所有字段默认 optional
+- 默认值：Proto3 不支持自定义默认值，由字段类型决定
+- 兼容性：WireType 保持相互兼容
+
+### 3. 代码生成器对比
+
+#### protoc-gen-js
+- 缺点：
+  - 无注释生成
+  - ES6 支持有限
+  - import 依赖不自动生成
+  - 成员通过函数形式调用（**没加括号容易出错**）
+  - 无命名空间
+  - 枚举字段**全部转大写**
+- 源码关键点：
+  - protobuf-javascript/generator/js_generator.cc
+    - JSIdent -> is_upper_camel
+  - grpc-web/generator/grpc_generator.cc
+    - LowercaseFirstLetter
+
+#### protoc-gen-ts
+- 优点：
+  - TypeScript 支持良好
+  - import 依赖自动生成
+  - 成员通过字段形式调用
+  - 包名作为命名空间
+- 缺点：
+  - 无注释生成
+  - 未使用的枚举/消息**不导出**
+
+#### protoc-gen-go
+- 优点：
+  - 注释生成完整
+  - 各种特性支持良好
+
+#### protoc-gen-csharp
+- 优点：
+  - 注释生成完整
+  - 各种特性支持良好
+
+### 4. 插件开发指南
+
+#### 基本概念
+- `--xxx_out`: 调用 protoc-gen-xxx 插件
+- `--xxx_opt=key1=value1,..`: 传递参数给插件
+
+#### 开发要点
+1. 插件执行特点：
+   - 多个插件并行执行
+   - 所有插件执行完毕后统一输出
+
+2. 补丁插件开发：
+   - 需要设置输入和输出路径
+   - 参考本项目的 protoc-gen-go-pbx 等插件实现
+
+3. 源码参考：
+   - protoc-gen-go-pbx：XProto 元数据生成
+   - protoc-gen-js-fix：ES6 模块修复
+   - protoc-gen-ts-fix：gRPC-Web 修复
 
 ## 问题反馈
 
