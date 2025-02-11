@@ -41,15 +41,15 @@ protox [options]
 - --version：显示版本
 - --install：安装工具链
   - --all：安装所有工具链
-  - --protoc=<ver>：protoc 工具版本,默认：29.2
-  - --protoc-gen-go=<ver>：protoc-gen-go 工具版本,默认：latest
-  - --protoc-gen-go-grpc=<ver>：protoc-gen-go-grpc 工具版本,默认：latest
-  - --protoc-gen-js=<ver>：protoc-gen-js 工具版本,默认：3.21.4
-  - --protoc-gen-web-grpc=<ver>：protoc-gen-web-grpc 工具版本,默认：1.5.0
-  - --protoc-gen-ts=<ver>：protoc-gen-ts 工具版本,默认：latest
-  - --gitproxy=<url>：git 代理地址,默认：https://ghproxy.cn/
-  - --goproxy=<url>：go 代理地址,默认：https://goproxy.cn,direct
-  - --npmproxy=<url>：npm 代理地址,默认：https://registry.npmmirror.com/
+  - --protoc=<ver>：protoc 工具版本，默认：29.2
+  - --protoc-gen-go=<ver>：protoc-gen-go 工具版本，默认：latest
+  - --protoc-gen-go-grpc=<ver>：protoc-gen-go-grpc 工具版本，默认：latest
+  - --protoc-gen-js=<ver>：protoc-gen-js 工具版本，默认：3.21.4
+  - --protoc-gen-web-grpc=<ver>：protoc-gen-web-grpc 工具版本，默认：1.5.0
+  - --protoc-gen-ts=<ver>：protoc-gen-ts 工具版本，默认：latest
+  - --gitproxy=<url>：git 代理地址，默认：https://ghproxy.cn/
+  - --goproxy=<url>：go 代理地址，默认：https://goproxy.cn，direct
+  - --npmproxy=<url>：npm 代理地址，默认：https://registry.npmmirror.com/
 - --xxx_out：与原生工具参数相同
 
 #### protoc - 原生命令
