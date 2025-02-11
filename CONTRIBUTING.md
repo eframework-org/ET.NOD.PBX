@@ -9,11 +9,12 @@
 - Node.js 16.11.7：运行环境
 
 ### 2. 核心依赖
-- ep.uni.util 0.0.2：工具库
+- ep.uni.util 0.0.4：工具库
   - XFile：文件操作
   - XLog：日志记录
   - XString：字符串处理
   - XTest：测试框架
+- follow-redirects 1.15.9：HTTP 重定向处理
 - google-protobuf 3.21.4：Protobuf 支持
 - grpc-web 1.5.0：gRPC Web 支持
 - protobufjs 7.4.0：Protobuf 工具库
