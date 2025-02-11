@@ -10,7 +10,7 @@ import { Protoc } from "./protoc"
     const args = process.argv.slice(2)
     if (args.length == 0 || args.indexOf("--help") >= 0) {
         try {
-            const mfile = XFile.PathJoin(XEnv.DataPath, "..", "README.md")
+            const mfile = XFile.PathJoin(XEnv.LocalPath, "..", "README.md")
             if (XFile.HasFile(mfile)) {
                 const lines = XFile.OpenText(mfile).split("\n")
                 const nlines = new Array<string>()

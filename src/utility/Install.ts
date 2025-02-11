@@ -5,7 +5,7 @@
 import { XEnv, XFile, XLog, XString, XUtility } from "ep.uni.util"
 import * as child_process from "child_process"
 import * as fs from "fs"
-import * as https from "https"
+import { https } from "follow-redirects"
 
 export namespace Install {
     export async function Process(args: string[]) {
@@ -49,7 +49,7 @@ export namespace Install {
     }
 
     async function Protoc(args: Map<string, string> = new Map()) {
-        const local = XFile.PathJoin(XEnv.DataPath, "protoc.ver")
+        const local = XFile.PathJoin(XEnv.LocalPath, "protoc.ver")
         if (XFile.HasFile(local) && !args.get("protoc")) {
             XLog.Debug(`Protoc: @${XFile.OpenText(local)}`)
         } else {
@@ -70,7 +70,7 @@ export namespace Install {
                 const plat = process.platform
                 const arch = process.arch === "arm64" ? "aarch_64" : (process.arch === "x64" ? "x86_64" : "x86_32")
                 const bin = plat + "_" + arch
-                const dir = XFile.PathJoin(XEnv.DataPath, "protoc")
+                const dir = XFile.PathJoin(XEnv.LocalPath, "protoc")
 
                 let url = binurl[bin]
                 if (!url) throw new Error(`Unsupported platform: ${bin}. Was not able to find a proper version.`)
@@ -120,14 +120,14 @@ export namespace Install {
         const goproxy = args.get("goproxy") ? args.get("goproxy") : "https://goproxy.cn,direct"
 
         const genGoVer = args.get("protoc-gen-go") ? args.get("protoc-gen-go") : "latest"
-        const genGoVerLocal = XFile.PathJoin(XEnv.DataPath, "protoc-gen-go.ver")
+        const genGoVerLocal = XFile.PathJoin(XEnv.LocalPath, "protoc-gen-go.ver")
         if (XFile.HasFile(genGoVerLocal) && !args.get("protoc-gen-go")) {
             XLog.Debug(`GoTool(protoc-gen-go): @${XFile.OpenText(genGoVerLocal)}`)
         } else {
             try {
                 if (!XString.IsNullOrEmpty(httpproxy)) XLog.Debug(`Install.GoTool(protoc-gen-go): using http proxy of ${httpproxy}.`)
 
-                const opt = XUtility.ExecOpt(XEnv.DataPath)
+                const opt = XUtility.ExecOpt(XEnv.LocalPath)
                 const tz = Intl.DateTimeFormat().resolvedOptions().timeZone.toLocaleLowerCase()
                 const gp = child_process.execSync("go env GOPROXY").toString().trim()
                 if ((XString.Contains(tz, "shanghai") && XString.IsNullOrEmpty(httpproxy) && !XString.Contains(gp, "http")) || args.has("goproxy")) {
@@ -145,14 +145,14 @@ export namespace Install {
         }
 
         const genGoGRpcVer = args.get("protoc-gen-go-grpc") ? args.get("protoc-gen-go-grpc") : "latest"
-        const genGoGRpcVerLocal = XFile.PathJoin(XEnv.DataPath, "protoc-gen-go-grpc.ver")
+        const genGoGRpcVerLocal = XFile.PathJoin(XEnv.LocalPath, "protoc-gen-go-grpc.ver")
         if (XFile.HasFile(genGoGRpcVerLocal) && !args.get("protoc-gen-go-grpc")) {
             XLog.Debug(`GoTool(protoc-gen-go-grpc): @${XFile.OpenText(genGoGRpcVerLocal)}`)
         } else {
             try {
                 if (!XString.IsNullOrEmpty(httpproxy)) XLog.Debug(`Install.GoTool(protoc-gen-go-grpc): using http proxy of ${httpproxy}.`)
 
-                const opt = XUtility.ExecOpt(XEnv.DataPath)
+                const opt = XUtility.ExecOpt(XEnv.LocalPath)
                 const tz = Intl.DateTimeFormat().resolvedOptions().timeZone.toLocaleLowerCase()
                 const gp = child_process.execSync("go env GOPROXY").toString().trim()
                 if ((XString.Contains(tz, "shanghai") && XString.IsNullOrEmpty(httpproxy) && !XString.Contains(gp, "http")) || args.has("goproxy")) {
@@ -176,7 +176,7 @@ export namespace Install {
 
     async function JSTool(args: Map<string, string> = new Map()) {
         const genJSVer = args.get("protoc-gen-js") ? args.get("protoc-gen-js") : "3.21.4"
-        const genJSVerLocal = XFile.PathJoin(XEnv.DataPath, "protoc-gen-js.ver")
+        const genJSVerLocal = XFile.PathJoin(XEnv.LocalPath, "protoc-gen-js.ver")
         if (XFile.HasFile(genJSVerLocal) && !args.get("protoc-gen-js")) {
             XLog.Debug(`JSTool(protoc-gen-js): @${XFile.OpenText(genJSVerLocal)}`)
         } else {
@@ -204,10 +204,10 @@ export namespace Install {
                 }
                 XLog.Debug(`Install.JSTool(protoc-gen-js): fetch from ${url}.`)
 
-                const dir = XFile.PathJoin(XEnv.DataPath, "protobuf-javascript")
+                const dir = XFile.PathJoin(XEnv.LocalPath, "protobuf-javascript")
                 XFile.DeleteDirectory(dir)
                 XFile.CreateDirectory(dir)
-                const zip = XFile.PathJoin(XEnv.DataPath, XFile.FileName(url))
+                const zip = XFile.PathJoin(XEnv.LocalPath, XFile.FileName(url))
                 const ws = fs.createWriteStream(zip)
 
                 await new Promise((resolve, reject) => {
@@ -225,7 +225,7 @@ export namespace Install {
                 let name = process.platform === "win32" ? "protoc-gen-js.exe" : "protoc-gen-js"
                 let src = XFile.PathJoin(dir, "bin", name)
                 if (!XFile.HasFile(src)) src = XFile.PathJoin(dir, XFile.FileName(url, false), "bin", name)   // win32的压缩包多了一个层级
-                const dst = XFile.PathJoin(XEnv.DataPath, name)
+                const dst = XFile.PathJoin(XEnv.LocalPath, name)
                 XFile.CopyFile(src, dst)
 
                 fs.chmodSync(dst, 0o755)
@@ -242,7 +242,7 @@ export namespace Install {
         }
 
         const genGRpcWebVer = args.get("protoc-gen-grpc-web") ? args.get("protoc-gen-grpc-web") : "1.5.0"
-        const genGRpcWebVerLocal = XFile.PathJoin(XEnv.DataPath, "protoc-gen-grpc-web.ver")
+        const genGRpcWebVerLocal = XFile.PathJoin(XEnv.LocalPath, "protoc-gen-grpc-web.ver")
         if (XFile.HasFile(genGRpcWebVerLocal) && !args.get("protoc-gen-grpc-web")) {
             XLog.Debug(`JSTool(protoc-gen-grpc-web): @${XFile.OpenText(genGRpcWebVerLocal)}`)
         } else {
@@ -272,7 +272,7 @@ export namespace Install {
                 }
                 XLog.Debug(`Install.JSTool(protoc-gen-grpc-web): fetch from ${url}.`)
 
-                const file = XFile.PathJoin(XEnv.DataPath, process.platform === "win32" ? "protoc-gen-grpc-web.exe" : "protoc-gen-grpc-web")
+                const file = XFile.PathJoin(XEnv.LocalPath, process.platform === "win32" ? "protoc-gen-grpc-web.exe" : "protoc-gen-grpc-web")
                 const ws = fs.createWriteStream(file)
 
                 await new Promise<void>((resolve, reject) => {
@@ -304,14 +304,14 @@ export namespace Install {
         const npmproxy = args.get("npmproxy") ? args.get("npmproxy") : "https://registry.npmmirror.com/"
 
         const genTSVer = args.get("protoc-gen-ts") ? args.get("protoc-gen-ts") : "latest"
-        const genTSVerLocal = XFile.PathJoin(XEnv.DataPath, "protoc-gen-ts.ver")
+        const genTSVerLocal = XFile.PathJoin(XEnv.LocalPath, "protoc-gen-ts.ver")
         if (XFile.HasFile(genTSVerLocal) && !args.get("protoc-gen-ts")) {
             XLog.Debug(`TSTool(protoc-gen-ts): @${XFile.OpenText(genTSVerLocal)}`)
         } else {
             try {
                 if (!XString.IsNullOrEmpty(httpproxy)) XLog.Debug(`Install.TSTool(protoc-gen-ts): using http proxy of ${httpproxy}.`)
 
-                const opt = XUtility.ExecOpt(XEnv.DataPath)
+                const opt = XUtility.ExecOpt(XEnv.LocalPath)
                 const tz = Intl.DateTimeFormat().resolvedOptions().timeZone.toLocaleLowerCase()
                 const np = child_process.execSync("npm config get registry").toString().trim()
                 let ext = ""

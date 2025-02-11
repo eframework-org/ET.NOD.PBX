@@ -6,9 +6,9 @@ import { XEnv, XFile, XTest } from "ep.uni.util"
 import { Install } from "../src/utility/Install"
 
 XTest.Test("Install Toolchains", async () => {
-    XFile.DeleteDirectory(XEnv.DataPath)
+    XFile.DeleteDirectory(XEnv.LocalPath)
     await Install.Process(["--protoc=29.2", "--gitproxy=https://ghproxy.cn/"]) // Install specified version.
 
-    XFile.DeleteDirectory(XEnv.DataPath)
+    XFile.DeleteDirectory(XEnv.LocalPath)
     await Install.Process(["--all"]) // Install all toolchains.
 })
