@@ -37,20 +37,20 @@ protox [options]
 ```
 
 选项：
-- --help: 查看文档
-- --version: 显示版本
-- --install: 安装工具链
-  - --all: 安装所有工具链
-  - --protoc=<ver>: protoc 工具版本,默认: 29.2
-  - --protoc-gen-go=<ver>: protoc-gen-go 工具版本,默认: latest
-  - --protoc-gen-go-grpc=<ver>: protoc-gen-go-grpc 工具版本,默认: latest
-  - --protoc-gen-js=<ver>: protoc-gen-js 工具版本,默认: 3.21.4
-  - --protoc-gen-web-grpc=<ver>: protoc-gen-web-grpc 工具版本,默认: 1.5.0
-  - --protoc-gen-ts=<ver>: protoc-gen-ts 工具版本,默认: latest
-  - --gitproxy=<url>: git 代理地址,默认: https://ghproxy.cn/
-  - --goproxy=<url>: go 代理地址,默认: https://goproxy.cn,direct
-  - --npmproxy=<url>: npm 代理地址,默认: https://registry.npmmirror.com/
-- --xxx_out: 与原生工具参数相同
+- --help：查看文档
+- --version：显示版本
+- --install：安装工具链
+  - --all：安装所有工具链
+  - --protoc=<ver>：protoc 工具版本,默认：29.2
+  - --protoc-gen-go=<ver>：protoc-gen-go 工具版本,默认：latest
+  - --protoc-gen-go-grpc=<ver>：protoc-gen-go-grpc 工具版本,默认：latest
+  - --protoc-gen-js=<ver>：protoc-gen-js 工具版本,默认：3.21.4
+  - --protoc-gen-web-grpc=<ver>：protoc-gen-web-grpc 工具版本,默认：1.5.0
+  - --protoc-gen-ts=<ver>：protoc-gen-ts 工具版本,默认：latest
+  - --gitproxy=<url>：git 代理地址,默认：https://ghproxy.cn/
+  - --goproxy=<url>：go 代理地址,默认：https://goproxy.cn,direct
+  - --npmproxy=<url>：npm 代理地址,默认：https://registry.npmmirror.com/
+- --xxx_out：与原生工具参数相同
 
 #### protoc - 原生命令
 Protocol Buffers 原生编译工具。
@@ -60,9 +60,9 @@ protoc [options] proto_files
 ```
 
 选项：
-- --help: 查看文档
-- --version: 显示版本
-- --xxx_out: 编译 proto 文件
+- --help：查看文档
+- --version：显示版本
+- --xxx_out：编译 proto 文件
 
 #### 代码生成插件
 
@@ -93,8 +93,8 @@ protoc [options] proto_files
 - 支持 `*.proto` 匹配一级目录，不支持 `**/*.proto` 递归匹配
 
 ### 2. TypeScript 导入错误
-问题: protoc-gen-ts-fix 生成的文件中 `import XXX from "XXX"` 报错
-解决: 在 tsconfig.json 中添加 `"esModuleInterop": true`
+问题：protoc-gen-ts-fix 生成的文件中 `import XXX from "XXX"` 报错
+解决：在 tsconfig.json 中添加 `"esModuleInterop"：true`
 
 ## 项目信息
 
