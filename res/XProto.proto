@@ -14,7 +14,7 @@ option csharp_namespace = "EP.U3D.PBX"; // csharp_namespace选项。
 // 内存模式。
 enum MemMode {
   // 未定义。
-  Undefined = 0;
+  None = 0;
 
   // 可读可写。
   Write = 1;

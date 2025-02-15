@@ -96,6 +96,11 @@ protoc [options] proto_files
 问题：protoc-gen-ts-fix 生成的文件中 `import XXX from "XXX"` 报错
 解决：在 tsconfig.json 中添加 `"esModuleInterop"：true`
 
+### 3. Protocol Buffers 枚举命名
+- 同一个 package 中的枚举值必须唯一，即使它们属于不同的枚举类型
+- 例如：MemMode 使用 `None`，LogLevel 使用 `Undefined` 作为默认值，避免命名冲突
+- 这是因为枚举值使用 C++ 作用域规则，它们是类型的兄弟而不是子级
+
 ## 项目信息
 
 - [更新记录](CHANGELOG.md)
