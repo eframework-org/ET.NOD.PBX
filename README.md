@@ -93,8 +93,8 @@ protoc [options] proto_files
 - 支持 `*.proto` 匹配一级目录，不支持 `**/*.proto` 递归匹配
 
 ### 2. TypeScript 导入错误
-问题：protoc-gen-ts-fix 生成的文件中 `import XXX from "XXX"` 报错
-解决：在 tsconfig.json 中添加 `"esModuleInterop"：true`
+- 问题：protoc-gen-ts-fix 生成的文件中 `import XXX from "XXX"` 报错
+- 解决：在 tsconfig.json 中添加 `"esModuleInterop"：true`
 
 ### 3. Protocol Buffers 枚举命名
 - 同一个 package 中的枚举值必须唯一，即使它们属于不同的枚举类型
