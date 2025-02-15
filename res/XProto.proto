@@ -8,64 +8,67 @@ package XProto;
 
 import "Descriptor.proto";
 
-option go_package = "github.com/eframework-org/EP.GO.PBX/XProto"; // go_package option. go_package选项。
-option csharp_namespace = "EP.U3D.PBX"; // csharp_namespace option. csharp_namespace选项。
+option go_package = "github.com/eframework-org/EP.GO.PBX/XProto"; // go_package选项。
+option csharp_namespace = "EP.U3D.PBX"; // csharp_namespace选项。
 
-// Memory mode. 内存模式。
+// 内存模式。
 enum MemMode {
-  // Read and write. 可读可写。
-  Write = 0;
-
-  // Read only. 只读不写。
-  Read = 1;
-}
-
-// Log level. 日志等级。
-enum LogLevel {
-  // Undefined. 未定义。
+  // 未定义。
   Undefined = 0;
 
-  // Emergency (0): System is unusable, typically used for catastrophic failures. 紧急（0）：系统不可用，通常用于灾难性故障。
+  // 可读可写。
+  Write = 1;
+
+  // 只读不写。
+  Read = 2;
+}
+
+// 日志等级。
+enum LogLevel {
+  // 未定义。
+  Undefined = 0;
+
+  // 紧急（0）：系统不可用，通常用于灾难性故障。
   Emergency = 1;
 
-  // Alert (1): Action must be taken immediately, indicating a condition that requires immediate attention. 警报（1）：必须立即采取行动，指示需要立即注意的情况。
+  // 警报（1）：必须立即采取行动，指示需要立即注意的情况。
   Alert = 2;
 
-  // Critical (2): Critical condition, indicating a severe fault that needs immediate attention. 严重（2）：严重条件，指示需要立即注意的严重故障。
+  // 严重（2）：严重条件，指示需要立即注意的严重故障。
   Critical = 3;
 
-  // Error (3): Error condition, indicating an error that should be resolved. 错误（3）：错误条件，指示应该解决的错误。
+  // 错误（3）：错误条件，指示应该解决的错误。
   Error = 4;
 
-  // Warning (4): Warning condition, indicating a potential issue that, if not addressed, may lead to an error. 警告（4）：警告条件，指示潜在问题，如果不解决可能会导致错误。
+  // 警告（4）：警告条件，指示潜在问题，如果不解决可能会导致错误。
   Warn = 5;
 
-  // Notice (5): Normal but important condition, indicating an event that is noteworthy but not necessarily problematic. 通知（5）：正常但重要的情况，指示值得注意但不一定有问题的事件。
+  // 通知（5）：正常但重要的情况，指示值得注意但不一定有问题的事件。
   Notice = 6;
 
-  // Info (6): Informational messages, used for general information about system operations. 信息（6）：信息消息，用于系统操作的一般信息。
+  // 信息（6）：信息消息，用于系统操作的一般信息。
   Info = 7;
 
-  // Debug (7): Debug-level messages, used for debugging and troubleshooting purposes. 调试（7）：调试级别的消息，用于调试和故障排除目的的消息。
+  // 调试（7）：调试级别的消息，用于调试和故障排除目的的消息。
   Debug = 8;
 }
 
-// Protocol description. 协议描述。
+// 协议描述。
 message MetaData {
-  // Memory mode. 内存模式。
+  // 内存模式。
   MemMode Mem = 1;
 
-  // Log level. 日志等级。
+  // 日志等级。
   LogLevel Log = 2;
 
-  // Thread range. 线程区间。
+  // 线程区间。
   repeated int32 Loom = 3;
 
-  // Extra parameters. 额外参数。
+  // 额外参数。
   repeated string Extras = 4;
 }
 
 extend google.protobuf.MethodOptions {
-  // Protocol description. 协议描述。
+  // 协议描述。
   MetaData Meta = 50000;
 }
