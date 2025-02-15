@@ -11,6 +11,8 @@ export async function Protoc(args: string[]) {
 
     if (!(args.length == 0 || args.indexOf("-h") >= 0 || (args.indexOf("--help") >= 0 || (args.indexOf("--version") >= 0)))) {
         process.env["PATH"] = `${process.env["PATH"]}${process.platform == "win32" ? ";" : ":"}${XEnv.LocalPath}` // Add local plugin bin for building.
+        if (process.env["GOROOT"]) process.env["PATH"] = `${process.env["PATH"]}${process.platform == "win32" ? ";" : ":"}${XFile.PathJoin(process.env["GOROOT"], "bin")}`
+        if (process.env["GOPATH"]) process.env["PATH"] = `${process.env["PATH"]}${process.platform == "win32" ? ";" : ":"}${XFile.PathJoin(process.env["GOPATH"], "bin")}`
         args.push(`--proto_path=${XFile.PathJoin(XEnv.LocalPath, "..", "res")}`) // Add proto lib for searching.
     }
     XLog.Debug("Protoc with arguments: {0}", args.join(" "))
