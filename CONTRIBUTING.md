@@ -26,7 +26,7 @@
 - rollup-plugin-sourcemaps：源码映射
 
 ### 4. 开发流程
-- 本地开发 -> 单元测试 -> 构建打包 -> 发布商店
+- 本地开发 -> 单元测试 -> 集成测试 -> 发布商店
 - 遵循 TypeScript 严格模式
 - 使用 Rollup 优化打包体积
 - 支持 source map 便于调试

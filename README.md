@@ -3,7 +3,7 @@
 [![Version](https://img.shields.io/npm/v/et.nod.pbx)](https://www.npmjs.com/package/et.nod.pbx)
 [![Downloads](https://img.shields.io/npm/dm/et.nod.pbx)](https://www.npmjs.com/package/et.nod.pbx)  
 
-NOD.PBX 工具简化了 Protocol Buffers 和 gRPC 的安装与使用，支持多种编程语言的代码生成。
+ET.NOD.PBX 工具简化了 Protocol Buffers 和 gRPC 的安装与使用，支持多种编程语言的代码生成。
 
 ## 功能特性
 
